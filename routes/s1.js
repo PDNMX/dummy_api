@@ -22,6 +22,7 @@ router.get('/', function(req, res, next) {
 });
 
 
+// buscar declaraciones por nombre/apellidos y por id
 router.get('/declaraciones', (req, res) => {
 
     MongoClient.connect(url, { useNewUrlParser: true }).then( client => {
