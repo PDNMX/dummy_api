@@ -8,7 +8,8 @@ const assert = require('assert');
 const url = 'mongodb://localhost:27017';
 
 // Database Name
-const dbName = 'myproject';
+const dbName = 'datagen';
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -22,7 +23,24 @@ router.get('/', function(req, res, next) {
 
 
 router.get('/declaraciones', (req, res) => {
-    res.json({"declaraciones": true});
+
+    MongoClient.connect(url, { useNewUrlParser: true }).then( client => {
+
+        let db = client.db(dbName);
+
+        let collection = db.collection('s1');
+
+        collection.find({}, {limit: 2}).toArray((err, data) =>{
+            res.json({
+                results: data
+            });
+            client.close();
+        });
+
+    }).catch(error => {
+        console.log(error);
+    });
+
 });
 
 module.exports = router;
