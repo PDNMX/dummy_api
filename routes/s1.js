@@ -41,8 +41,11 @@ router.get('/declaraciones', (req, res) => {
         } else {
             let query = {};
             let projection = {};
+            let pagination = {
+                limit: 2
+            };
 
-            collection.find(query, {limit: 2}).toArray((err, data) =>{
+            collection.find(query, pagination).toArray((err, data) =>{
                 res.json({
                     results: data
                 });
