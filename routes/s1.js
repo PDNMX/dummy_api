@@ -30,7 +30,7 @@ router.get('/declaraciones', (req, res) => {
         let collection = db.collection('s1');
 
 
-        const {id, nombre, primer_apellido, segundo_apellido} = req.query;
+        const {id, nombres, primer_apellido, segundo_apellido} = req.query;
 
         if (typeof id !== 'undefined'){
 
@@ -39,7 +39,32 @@ router.get('/declaraciones', (req, res) => {
             })
 
         } else {
-            let query = {};
+            let query ={};
+
+            if (typeof nombres!== 'undefined') {
+                query = {
+                    "informacion_personal.informacion_general.nombres": {
+                        "$regex": nombres, "$options": "i"
+                    }
+                };
+            }
+
+            if (typeof primer_apellido !== 'undefined'){
+                query = {
+                    "informacion_personal.informacion_general.primer_apellido": {
+                        "$regex": primer_apellido, "$options": "i"
+                    }
+                };
+            }
+
+            if (typeof segundo_apellido !== 'undefined'){
+                query = {
+                    "informacion_personal.informacion_general.segundo_apellido": {
+                        "$regex": segundo_apellido, "$options": "i"
+                    }
+                };
+            }
+
             let projection = {};
             let pagination = {
                 limit: 2
