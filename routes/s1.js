@@ -3,13 +3,12 @@ var router = express.Router();
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
-
+const ObjectId = require('mongodb').ObjectId;
 // Connection URL
 const url = 'mongodb://localhost:27017';
 
 // Database Name
 const dbName = 'datagen';
-
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -28,15 +27,28 @@ router.get('/declaraciones', (req, res) => {
     MongoClient.connect(url, { useNewUrlParser: true }).then( client => {
 
         let db = client.db(dbName);
-
         let collection = db.collection('s1');
 
-        collection.find({}, {limit: 2}).toArray((err, data) =>{
-            res.json({
-                results: data
+
+        const {id, nombre, primer_apellido, segundo_apellido} = req.query;
+
+        if (typeof id !== 'undefined'){
+
+            collection.findOne({_id: ObjectId(id)}).then(data => {
+                res.json(data);
+            })
+
+        } else {
+            let query = {};
+            let projection = {};
+
+            collection.find(query, {limit: 2}).toArray((err, data) =>{
+                res.json({
+                    results: data
+                });
+                client.close();
             });
-            client.close();
-        });
+        }
 
     }).catch(error => {
         console.log(error);
