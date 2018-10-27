@@ -23,6 +23,8 @@ router.get('/', function(req, res, next) {
 
 const profiles = {
     profile_1: {
+        "informacion_personal.informacion_general": 1,
+        "informacion_personal.datos_curriculares": 1
 
     },
     profile_2: {
