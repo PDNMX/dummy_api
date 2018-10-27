@@ -21,6 +21,32 @@ router.get('/', function(req, res, next) {
 });
 
 
+const profiles = {
+    profile_1: {
+
+    },
+    profile_2: {
+
+    },
+    profile_3:{
+        "informacion_personal.informacion_general" : 1
+    }
+};
+
+//definición de permisos
+const getPermissions = profile => {
+    switch(profile){
+        case "profile_1":
+            return profiles.profile_1;
+        case "profile_2":
+            return profiles.profile_2;
+        case "profile_3":
+            return profiles.profile_3;
+        default:
+            return profiles.profile_3;
+    }
+};
+
 // buscar declaraciones por nombre/apellidos y por id
 router.get('/declaraciones', (req, res) => {
 
@@ -29,12 +55,16 @@ router.get('/declaraciones', (req, res) => {
         let db = client.db(dbName);
         let collection = db.collection('s1');
 
+        console.log(req.query);
 
-        const {id, nombres, primer_apellido, segundo_apellido} = req.query;
+        const {id, profile, nombres, primer_apellido, segundo_apellido} = req.query;
 
         if (typeof id !== 'undefined'){
 
-            collection.findOne({_id: ObjectId(id)}).then(data => {
+            const permissions = getPermissions(profile);
+            console.log(permissions);
+
+            collection.findOne({_id: ObjectId(id)}, {projection: permissions}).then(data => {
                 res.json(data);
             })
 
@@ -65,12 +95,18 @@ router.get('/declaraciones', (req, res) => {
                 };
             }
 
-            let projection = {};
+
+            /*
             let pagination = {
                 limit: 2
+            };*/
+
+            const projection = {
+                id: 1,
+                "informacion_personal.informacion_general": 1
             };
 
-            collection.find(query, pagination).toArray((err, data) =>{
+            collection.find(query).project(projection).toArray((err, data) =>{
                 res.json({
                     results: data
                 });
