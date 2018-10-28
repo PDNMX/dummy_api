@@ -119,7 +119,8 @@ router.get('/declaraciones', (req, res) => {
 
 
             let pagination = {
-                limit: 10
+                limit: 10,
+                skip: 0
             };
 
             if (typeof skip !== 'undefined' ){
