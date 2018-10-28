@@ -1,14 +1,24 @@
 var express = require('express');
 var router = express.Router();
+require('dotenv').config();
 
 const MongoClient = require('mongodb').MongoClient;
 const assert = require('assert');
 const ObjectId = require('mongodb').ObjectId;
+
 // Connection URL
-const url = 'mongodb://localhost:27017';
+process.env.DB_USER = process.env.DB_USER || 'demo';
+process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'd3m0';
+process.env.DB_HOST = process.env.DB_HOST || 'localhost';
+process.env.DB_PORT = process.env.DB_PORT || '27017';
+process.env.DB_NAME = process.env.DB_NAME || 'datagen';
+
+const url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME;
+//const url = 'mongodb://root:password@mongo:27017'
 
 // Database Name
-const dbName = 'datagen';
+const dbName = process.env.DB_NAME;
+
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -61,7 +71,7 @@ const getPermissions = profile => {
 
 // buscar declaraciones por nombre/apellidos y por id
 router.get('/declaraciones', (req, res) => {
-
+    //console.log(url);
     MongoClient.connect(url, { useNewUrlParser: true }).then( client => {
 
         let db = client.db(dbName);

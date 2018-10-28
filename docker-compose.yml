@@ -1,0 +1,32 @@
+# Use root/example as user/password credentials
+version: '3.1'
+
+volumes:
+  mongo_data:
+
+services:
+  mongo:
+    image: mongo:4-xenial
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - 'mongo_data:/data/db'
+    command: mongod --auth
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DB_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+  api:
+    restart: always
+    #container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    ports:
+      - 6060:3000
+    links:
+      - mongo
+    depends_on:
+      - mongo
