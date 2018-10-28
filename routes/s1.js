@@ -130,6 +130,7 @@ router.get('/declaraciones', (req, res) => {
                 pagination.limit = isNaN(limit)?10:Math.abs(limit)
             }
 
+            console.log(pagination);
 
             const projection = {
                 id: 1,
