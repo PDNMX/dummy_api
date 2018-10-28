@@ -144,6 +144,7 @@ router.get('/declaraciones', (req, res) => {
                 curr.toArray((err, data) =>{
                     res.json({
                         total: count,
+                        pagination: pagination,
                         results: data
                     });
                     client.close();
