@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var cors = require('cors');
 require('dotenv').config();
 
 const MongoClient = require('mongodb').MongoClient;
@@ -70,7 +71,7 @@ const getPermissions = profile => {
 };
 
 // buscar declaraciones por nombre/apellidos y por id
-router.get('/declaraciones', (req, res) => {
+router.get('/declaraciones',cors(), (req, res) => {
     //console.log(url);
     MongoClient.connect(url, { useNewUrlParser: true }).then( client => {
 
