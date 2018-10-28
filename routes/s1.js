@@ -39,7 +39,7 @@ const profiles = {
         "informacion_personal.datos_curriculares": 1
     },
     profile_4:{
-        
+
     }
 };
 
@@ -69,7 +69,7 @@ router.get('/declaraciones', (req, res) => {
 
         console.log(req.query);
 
-        const {id, profile, nombres, primer_apellido, segundo_apellido} = req.query;
+        const {id, skip, limit, profile, nombres, primer_apellido, segundo_apellido} = req.query;
 
         if (typeof id !== 'undefined'){
 
@@ -108,22 +108,36 @@ router.get('/declaraciones', (req, res) => {
             }
 
 
-            /*
             let pagination = {
-                limit: 2
-            };*/
+                limit: 10
+            };
+
+            if (typeof skip !== 'undefined' ){
+                pagination.skip = isNaN(skip)?0:Math.abs(skip)
+            }
+
+            if (typeof limit !== 'undefined'){
+                pagination.limit = isNaN(limit)?10:Math.abs(limit)
+            }
+
 
             const projection = {
                 id: 1,
                 "informacion_personal.informacion_general": 1
             };
 
-            collection.find(query).project(projection).toArray((err, data) =>{
-                res.json({
-                    results: data
+            let curr = collection.find(query, pagination).project(projection);
+
+            curr.count().then(count => {
+                curr.toArray((err, data) =>{
+                    res.json({
+                        total: count,
+                        results: data
+                    });
+                    client.close();
                 });
-                client.close();
             });
+
         }
 
     }).catch(error => {
