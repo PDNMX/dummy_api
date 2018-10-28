@@ -27,11 +27,19 @@ const profiles = {
         "informacion_personal.datos_curriculares": 1
 
     },
-    profile_2: {
-
-    },
-    profile_3:{
+    profile_2:{
         "informacion_personal.informacion_general" : 1
+    },
+    profile_3: {
+        "informacion_personal.informacion_general.nombres": 1,
+        "informacion_personal.informacion_general.primer_apellido": 1,
+        "informacion_personal.informacion_general.segundo_apellido": 1,
+        "informacion_personal.informacion_general.fecha_nacimiento": 1,
+        "informacion_personal.informacion_general.correo_electronico": 1,
+        "informacion_personal.datos_curriculares": 1
+    },
+    profile_4:{
+        
     }
 };
 
@@ -44,6 +52,8 @@ const getPermissions = profile => {
             return profiles.profile_2;
         case "profile_3":
             return profiles.profile_3;
+        case "profile_4":
+            return profile.profile_4;
         default:
             return profiles.profile_3;
     }
