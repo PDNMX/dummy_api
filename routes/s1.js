@@ -41,16 +41,52 @@ const profiles = {
     profile_2:{
         "informacion_personal.informacion_general" : 1
     },
+    //perfil público
     profile_3: {
-        "informacion_personal.informacion_general.nombres": 1,
-        "informacion_personal.informacion_general.primer_apellido": 1,
-        "informacion_personal.informacion_general.segundo_apellido": 1,
-        "informacion_personal.informacion_general.fecha_nacimiento": 1,
-        "informacion_personal.informacion_general.correo_electronico": 1,
-        "informacion_personal.datos_curriculares": 1
+        "informacion_personal.informacion_general.curp": 0,
+        "informacion_personal.informacion_general.rfc": 0,
+        "informacion_personal.informacion_general.numero_identificacion_oficial": 0,
+        "informacion_personal.informacion_general.correo_electronico.personal": 0,
+        "informacion_personal.informacion_general.correo_electronico.telefono": 0,
+        "informacion_personal.informacion_general.correo_electronico.domicilio": 0,
+        "informacion_personal.datos_dependientes_economicos.nombres": 0,
+        "informacion_personal.datos_dependientes_economicos.primer_apellido": 0,
+        "informacion_personal.datos_dependientes_economicos.segundo_apellido": 0,
+        "informacion_personal.datos_dependientes_economicos.nacionalidades": 0,
+        "informacion_personal.datos_dependientes_economicos.curp": 0,
+        "informacion_personal.datos_dependientes_economicos.rfc": 0,
+        "informacion_personal.datos_dependientes_economicos.fecha_nacimiento": 0,
+        "informacion_personal.datos_dependientes_economicos.numero_identificacion_oficial": 0,
+        "informacion_personal.datos_dependientes_economicos.habita_domicilio_declarante": 0,
+        "informacion_personal.datos_dependientes_economicos.domicilio": 0,
+        "informacion_personal.datos_dependientes_economicos.medio_contacto": 0,
+        "informacion_personal.datos_dependientes_economicos.ingresos_propios": 0,
+        "informacion_personal.datos_dependientes_economicos.ocupacion_profesion": 0,
+
+        "intereses.representacion_activa.nombre_parte_representada":0,
+        "intereses.representacion_activa.curp_parte":0,
+        "intereses.representacion_activa.rfc_parte":0,
+        "intereses.representacion_activa.fecha_nacimiento_parte":0,
+        "intereses.representacion_activa.ocupacion_profesion_parte":0,
+
+        "intereses.representacion_pasiva.nacionalidades_representante":0,
+        "intereses.representacion_pasiva.curp_representante":0,
+        "intereses.representacion_pasiva.rfc_representante":0,
+        "intereses.representacion_pasiva.fecha_nacimiento_representante":0,
+
+        "socios_comerciales.nombre_socio":0,
+        "socios_comerciales.curp_socio":0,
+        "socios_comerciales.rfc_socio":0,
+        "socios_comerciales.lugar_nacimiento_socio":0,
+        "socios_comerciales.fecha_nacimiento_socio":0,
+        "socios_comerciales.porcentaje_participacion":0,
+
+        
+
+
     },
     profile_4:{
-
+        //perfil con todos los permisos
     }
 };
 
