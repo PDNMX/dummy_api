@@ -81,6 +81,19 @@ const profiles = {
         "socios_comerciales.fecha_nacimiento_socio":0,
         "socios_comerciales.porcentaje_participacion":0,
 
+        "clientes_principales.dueno_encargado": 0,
+        "clientes_principales.nombre_cliente": 0,
+        "clientes_principales.rfc_cliente": 0,
+        "clientes_principales.domicilio_cliente": 0,
+        "clientes_principales.porcentaje_facturacion": 0,
+
+        "otras_partes.nombre_denominacion_parte": 0,
+        "otras_partes.nacionalidades": 0,
+        "otras_partes.curp": 0,
+        "otras_partes.rfc": 0,
+        "otras_partes.fecha_nacimiento": 0,
+
+        "beneficios_gratuitos.origen_beneficio":0,
         
 
 
