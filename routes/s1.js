@@ -143,12 +143,35 @@ const profiles = {
         "ingresos.otros_ingresos.domicilio_actividad": 0,
 
         "activos.bienes_inmuebles.nombre_copropietario": 0,
-        "activos.identificacion_bien": 0,
-        "activos.domicilio_bien": 0,
-        "activos.nombre_denominacion_quien_adquirio":0,
-        "activos.rfc_quien_adquirio":0,
-        "activos.curp_quien_adquirio":0,
+        "activos.bienes_inmuebles.identificacion_bien": 0,
+        "activos.bienes_inmuebles.domicilio_bien": 0,
+        "activos.bienes_inmuebles.nombre_denominacion_quien_adquirio": 0,
+        "activos.bienes_inmuebles.rfc_quien_adquirio": 0,
+        "activos.bienes_inmuebles.curp_quien_adquirio": 0,
 
+        "activos.bienes_muebles_registrables.numero_serie": 0,
+        "activos.bienes_muebles_registrables.lugar_registro": 0,
+        "activos.bienes_muebles_registrables.nombres_copropietarios": 0,
+        "activos.bienes_muebles_registrables.numero_registro_vehicular": 0,
+        "activos.bienes_muebles_registrables.nombre_denominacion_adquirio": 0,
+        "activos.bienes_muebles_registrables.rfc_quien_adquirio": 0,
+
+        "activos.bienes_muebles_no_registrables.nombre_denominacion_adquirio": 0,
+        "activos.bienes_muebles_no_registrables.porcentaje_propiedad": 0,
+        "activos.nombres_copropietarios": 0,
+
+        "activos.inversiones_cuentas_valores.numero_cuenta": 0,
+        "activos.inversiones_cuentas_valores.rfc_institucion": 0,
+        "activos.inversiones_cuentas_valores.domicilio_institucion": 0,
+        "activos.inversiones_cuentas_valores.fecha_inicio": 0,
+        "activos.inversiones_cuentas_valores.monto_original": 0,
+        "activos.inversiones_cuentas_valores.saldo_anual": 0,
+        "activos.inversiones_cuentas_valores.plazo": 0,
+        "activos.inversiones_cuentas_valores.unidad_medida_plazo": 0,
+
+        "activos.efectivo_metales.monto": 0,
+
+        
 
     },
     profile_4:{
