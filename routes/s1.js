@@ -8,18 +8,20 @@ const assert = require('assert');
 const ObjectId = require('mongodb').ObjectId;
 
 // Connection URL
-process.env.DB_USER = process.env.DB_USER || 'demo';
-process.env.DB_PASSWORD = process.env.DB_PASSWORD || 'd3m0';
-process.env.DB_HOST = process.env.DB_HOST || 'localhost';
-process.env.DB_PORT = process.env.DB_PORT || '27017';
-process.env.DB_NAME = process.env.DB_NAME || 'datagen';
+const DB_USER = process.env.DB_USER || '';
+const DB_PASSWORD = process.env.DB_PASSWORD || '';
+const DB_HOST = process.env.DB_HOST || 'localhost';
+const DB_PORT = process.env.DB_PORT || '27017';
+const DB_NAME = process.env.DB_NAME || 'datagen';
 
-const url = 'mongodb://' + process.env.DB_USER + ':' + process.env.DB_PASSWORD + '@' + process.env.DB_HOST + ':' + process.env.DB_PORT + '/' + process.env.DB_NAME;
-//const url = 'mongodb://root:password@mongo:27017'
+let url = 'mongodb://' + DB_HOST + ':' + DB_PORT + '/' + DB_NAME;
+
+if (DB_USER !== '' && DB_PASSWORD !== '') {
+    url = `mongodb://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+}
 
 // Database Name
 const dbName = process.env.DB_NAME;
-
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
