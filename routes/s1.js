@@ -171,8 +171,23 @@ const profiles = {
 
         "activos.efectivo_metales.monto": 0,
 
-        
-
+        "activos.fideicomisos.numero_registro":0,
+        "activos.fideicomisos.nombre_fideicomitente":0,
+        "activos.fideicomisos.rfc_fideicomitente":0,
+        "activos.fideicomisos.curp_fideicomitente":0,
+        "activos.fideicomisos.domicilio_fideicomitente":0,
+        "activos.fideicomisos.fecha_nacimiento_constitucion_fideicomitente":0,
+        "activos.fideicomisos.nombre_fideicomisario":0,
+        "activos.fideicomisos.rfc_fideicomisario":0,
+        "activos.fideicomisos.curp_fideicomisario":0,
+        "activos.fideicomisos.fecha_nacimiento_constitucion_fideicomisario":0,
+        "activos.fideicomisos.domicilio_fideicomisario":0,
+        "activos.fideicomisos.nombre_fiduciario":0,
+        "activos.fideicomisos.rfc_fiduciario":0,
+        "activos.fideicomisos.curp_fiduciario":0,
+        "activos.fideicomisos.domicilio_fiduciario":0,
+        "activos.fideicomisos.fecha_nacimiento_constitucion_fiduciario":0,
+        "activos.fideicomisos.valor":0
     },
     profile_4:{
         //perfil con todos los permisos
