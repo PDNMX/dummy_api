@@ -187,7 +187,18 @@ const profiles = {
         "activos.fideicomisos.curp_fiduciario":0,
         "activos.fideicomisos.domicilio_fiduciario":0,
         "activos.fideicomisos.fecha_nacimiento_constitucion_fiduciario":0,
-        "activos.fideicomisos.valor":0
+        "activos.fideicomisos.valor":0,
+
+        "activos.bienes_instangibles.propietario_registrado": 0,
+        "activos.bienes_intangibles.nombre_copropietario": 0,
+        "activos.bienes_intangibles.porcentaje_propiedad_copropietario":0,
+
+        "activos.cuentas_por_cobrar.nombre_prestatario":0,
+        "activos.cuentas_por_cobrar.domicilio_prestatarios":0,
+        "activos.cuentas_por_cobrar.monto_original_prestamo":0,
+        "activos.cuentas_por_cobrar.saldo_pendiente":0,
+        "activos.cuentas_por_cobrar.nombre_copropietario":0
+
     },
     profile_4:{
         //perfil con todos los permisos
