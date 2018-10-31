@@ -121,6 +121,28 @@ const profiles = {
         "ingresos.arrendamiento.rfc": 0,
         "ingresos.arrendamiento.curp": 0,
         "ingresos.arrendamiento.domicilio_actividad": 0,
+
+        "ingresos.intereses.nombre_denominacion_razon_social": 0,
+        "ingresos.intereses.rfc": 0,
+        "ingresos.intereses.curp": 0,
+        "ingresos.intereses.domicilio": 0,
+
+        "ingresos.premios.nombre_denominacion": 0,
+        "ingresos.premios.rfc": 0,
+        "ingresos.premios.curp": 0,
+        "ingresos.premios.domicilio": 0,
+
+        "ingresos.enajenacion_bienes.nombre_denominacion": 0,
+        "ingresos.enajenacion_bienes.rfc": 0,
+        "ingresos.enajenacion_bienes.curp": 0,
+        "ingresos.enajenacion_bienes.domicilio_bien_enajenado": 0,
+
+        "ingresos.otros_ingresos.nombre_denominacion": 0,
+        "ingresos.otros_ingresos.rfc": 0,
+        "ingresos.otros_ingresos.curp": 0,
+        "ingresos.otros_ingresos.domicilio_actividad": 0,
+
+
     },
     profile_4:{
         //perfil con todos los permisos
