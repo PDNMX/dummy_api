@@ -197,7 +197,23 @@ const profiles = {
         "activos.cuentas_por_cobrar.domicilio_prestatarios":0,
         "activos.cuentas_por_cobrar.monto_original_prestamo":0,
         "activos.cuentas_por_cobrar.saldo_pendiente":0,
-        "activos.cuentas_por_cobrar.nombre_copropietario":0
+        "activos.cuentas_por_cobrar.nombre_copropietario":0,
+
+        "activos.uso_especie_propiedad_tercero.nombre_tercero_propietario": 0,
+        "activos.uso_especie_propiedad_tercero.rfc_tercero_propietario": 0,
+        "activos.uso_especie_propiedad_tercero.curp_tercero_propietario": 0,
+        "activos.uso_especie_propiedad_tercero.domicilio_persona": 0,
+
+        "pasivos.deudas.identificador_deuda": 0,
+        "pasivos.deudas.nombre_acreedor": 0,
+        "pasivos.deudas.rfc_acreedor": 0,
+        "pasivos.deudas.domicilio_acreedor": 0,
+        "pasivos.deudas.nombre_garante": 0,
+
+        "pasivos.otras_obligaciones.identificador_obligacion":0,
+        "pasivos.otras_obligaciones.nombre_acreedor": 0,
+        "pasivos.otras_obligaciones.rfc_acreedor": 0,
+        "pasivos.otras_obligaciones.domicilio_acreedor": 0
 
     },
     profile_4:{
