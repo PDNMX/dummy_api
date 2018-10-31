@@ -142,6 +142,13 @@ const profiles = {
         "ingresos.otros_ingresos.curp": 0,
         "ingresos.otros_ingresos.domicilio_actividad": 0,
 
+        "activos.bienes_inmuebles.nombre_copropietario": 0,
+        "activos.identificacion_bien": 0,
+        "activos.domicilio_bien": 0,
+        "activos.nombre_denominacion_quien_adquirio":0,
+        "activos.rfc_quien_adquirio":0,
+        "activos.curp_quien_adquirio":0,
+
 
     },
     profile_4:{
