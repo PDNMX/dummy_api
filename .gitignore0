@@ -62,6 +62,3 @@ typings/
 
 # webstorm
 .idea
-
-#variables entorno benito
-env_dev.sh
