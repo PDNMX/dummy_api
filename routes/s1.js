@@ -47,10 +47,11 @@ const profiles = {
     profile_3: {
         "informacion_personal.informacion_general.curp": 0,
         "informacion_personal.informacion_general.rfc": 0,
+        "informacion_personal.informacion_general.fecha_nacimiento": 0,
         "informacion_personal.informacion_general.numero_identificacion_oficial": 0,
         "informacion_personal.informacion_general.correo_electronico.personal": 0,
-        "informacion_personal.informacion_general.correo_electronico.telefono": 0,
-        "informacion_personal.informacion_general.correo_electronico.domicilio": 0,
+        "informacion_personal.informacion_general.telefono": 0,
+        "informacion_personal.informacion_general.domicilio": 0,
         "informacion_personal.datos_dependientes_economicos.nombres": 0,
         "informacion_personal.datos_dependientes_economicos.primer_apellido": 0,
         "informacion_personal.datos_dependientes_economicos.segundo_apellido": 0,
