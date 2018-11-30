@@ -2,10 +2,10 @@
 
 ## Descripción
 API de **Declaraciones** con dos endpoints:
-- Interfaz de captura de declaraciones: [hola](https://github.com/PDNMX/declaraciones)
-- 
+- Interfaz de captura de declaraciones. [Consultar](https://github.com/PDNMX/declaraciones)
+- Estándar de declaraciones. [Consultar](https://github.com/PDNMX/api_docs/tree/master/S1)
 
-
-## Uso
-
-1. Crear base de mongo
+## ¿Cómo se corre?
+1. 
+2.
+3.
