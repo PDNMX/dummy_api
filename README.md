@@ -1,6 +1,11 @@
 # dummy_api
 
 ## Descripción
-Esta aplicación es un generador de declaraciones de prueba, es decir, *dummies*
+API de **Declaraciones** con dos endpoints:
+- Interfaz de captura de declaraciones: [hola](https://github.com/PDNMX/declaraciones)
+- 
+
 
 ## Uso
+
+1. Crear base de mongo
