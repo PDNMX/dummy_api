@@ -6,6 +6,7 @@ var cors = require('cors');
 
 var indexRouter = require('./routes/index');
 var s1Router = require('./routes/s1');
+var s1GFRouter = require('./routes/s1_gf');
 
 
 // inicio declaraciones
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/api/s1', s1Router);
+app.use('/api/v2/s1', s1GFRouter);
 
 // inicio declaraciones
 app.use('/users', usersRouter);

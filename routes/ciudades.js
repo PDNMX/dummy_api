@@ -4,8 +4,6 @@ var router = express.Router();
 var dbmongo = require("./database_config");
 
 const MongoClient = require("mongodb").MongoClient;
-const assert = require("assert");
-const ObjectId = require("mongodb").ObjectId;
 
 /* GET users listing. */
 router.get("/", function(req, res, next) {

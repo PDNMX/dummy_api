@@ -232,7 +232,7 @@ const getPermissions = profile => {
         case "profile_3":
             return profiles.profile_3;
         case "profile_4":
-            return profile.profile_4;
+            return profiles.profile_4;
         default:
             return profiles.profile_3;
     }
