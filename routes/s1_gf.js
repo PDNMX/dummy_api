@@ -23,16 +23,15 @@ const getPermissions = profile => {
   }
 };
 
-
-router.get('/', function(req, res, next) {
-    res.json({
-        version_api: '2.0',
-        sistema: {
-            id:1,
-            nombre: 'Declaraciones'
-        }});
+router.get("/", function(req, res, next) {
+  res.json({
+    version_api: "2.0",
+    sistema: {
+      id: 1,
+      nombre: "Declaraciones"
+    }
+  });
 });
-
 
 /* GET users listing. */
 router.get("/declaraciones", function(req, res, next) {
@@ -63,66 +62,78 @@ router.get("/declaraciones", function(req, res, next) {
       } else {
         //console.log("query ", query);
 
-        if (
-          typeof query[
-            "informacion_personal.informacion_general.fecha_nacimiento"
-          ] !== "undefined"
-        ) {
-          fec_nac =
-            query["informacion_personal.informacion_general.fecha_nacimiento"];
-          //console.log(fec_nac);
-          if (Object.keys(fec_nac).length == 2) {
-            if (
-              typeof fec_nac.desde !== "undefined" &&
-              typeof fec_nac.hasta !== "undefined"
-            ) {
+        if (typeof query === "undefined") {
+          res.json({
+            version_api: "2.0",
+            sistema: {
+              id: 1,
+              nombre: "Declaraciones"
+            }
+          });
+        } else {
+          if (
+            typeof query[
+              "informacion_personal.informacion_general.fecha_nacimiento"
+            ] !== "undefined"
+          ) {
+            fec_nac =
+              query[
+                "informacion_personal.informacion_general.fecha_nacimiento"
+              ];
+            //console.log(fec_nac);
+            if (Object.keys(fec_nac).length == 2) {
+              if (
+                typeof fec_nac.desde !== "undefined" &&
+                typeof fec_nac.hasta !== "undefined"
+              ) {
+                query[
+                  "informacion_personal.informacion_general.fecha_nacimiento_bin"
+                ] = {
+                  $gte: new Date(fec_nac.desde),
+                  $lte: new Date(fec_nac.hasta)
+                };
+              }
+            } else {
               query[
                 "informacion_personal.informacion_general.fecha_nacimiento_bin"
-              ] = {
-                $gte: new Date(fec_nac.desde),
-                $lte: new Date(fec_nac.hasta)
-              };
+              ] = new Date(fec_nac.desde + "T00:00:00.000-0600");
             }
-          } else {
-            query[
-              "informacion_personal.informacion_general.fecha_nacimiento_bin"
-            ] = new Date(fec_nac.desde+"T00:00:00.000-0600");
+
+            delete query[
+              "informacion_personal.informacion_general.fecha_nacimiento"
+            ];
           }
 
-          delete query[
-            "informacion_personal.informacion_general.fecha_nacimiento"
-          ];
-        }
+          console.log("query: ", query);
 
-        console.log("query: ", query);
+          let pagination = {
+            limit: 10,
+            skip: 0
+          };
 
-        let pagination = {
-          limit: 10,
-          skip: 0
-        };
+          if (typeof skip !== "undefined") {
+            pagination.skip = isNaN(skip) ? 0 : Math.abs(skip);
+          }
 
-        if (typeof skip !== "undefined") {
-          pagination.skip = isNaN(skip) ? 0 : Math.abs(skip);
-        }
+          if (typeof limit !== "undefined") {
+            pagination.limit = isNaN(limit) ? 10 : Math.abs(limit);
+          }
 
-        if (typeof limit !== "undefined") {
-          pagination.limit = isNaN(limit) ? 10 : Math.abs(limit);
-        }
+          //console.log(pagination);
 
-        //console.log(pagination);
+          let curr = collection.find(query, pagination).project(permissions);
 
-        let curr = collection.find(query, pagination).project(permissions);
-
-        curr.count().then(count => {
-          curr.toArray((err, data) => {
-            res.json({
-              total: count,
-              pagination: pagination,
-              results: data
+          curr.count().then(count => {
+            curr.toArray((err, data) => {
+              res.json({
+                total: count,
+                pagination: pagination,
+                results: data
+              });
+              client.close();
             });
-            client.close();
           });
-        });
+        }
       }
     })
     .catch(error => {
