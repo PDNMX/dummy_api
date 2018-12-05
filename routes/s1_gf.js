@@ -104,6 +104,48 @@ router.get("/declaraciones", function(req, res, next) {
             ];
           }
 
+          if (
+            typeof query["informacion_personal.informacion_general.nombres"] !==
+            "undefined"
+          ) {
+            query["informacion_personal.informacion_general.nombres"] = {
+              $regex: query["informacion_personal.informacion_general.nombres"],
+              $options: "i"
+            };
+          }
+
+          if (
+            typeof query[
+              "informacion_personal.informacion_general.primer_apellido"
+            ] !== "undefined"
+          ) {
+            query[
+              "informacion_personal.informacion_general.primer_apellido"
+            ] = {
+              $regex:
+                query[
+                  "informacion_personal.informacion_general.primer_apellido"
+                ],
+              $options: "i"
+            };
+          }
+
+          if (
+            typeof query[
+              "informacion_personal.informacion_general.segundo_apellido"
+            ] !== "undefined"
+          ) {
+            query[
+              "informacion_personal.informacion_general.segundo_apellido"
+            ] = {
+              $regex:
+                query[
+                  "informacion_personal.informacion_general.segundo_apellido"
+                ],
+              $options: "i"
+            };
+          }
+
           console.log("query: ", query);
 
           let pagination = {
