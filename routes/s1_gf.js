@@ -23,6 +23,17 @@ const getPermissions = profile => {
   }
 };
 
+
+router.get('/', function(req, res, next) {
+    res.json({
+        version_api: '2.0',
+        sistema: {
+            id:1,
+            nombre: 'Declaraciones'
+        }});
+});
+
+
 /* GET users listing. */
 router.get("/declaraciones", function(req, res, next) {
   let { profile, skip, limit, id, query } = req.body;
