@@ -34,7 +34,7 @@ router.get("/", function(req, res, next) {
 });
 
 /* GET users listing. */
-router.get("/declaraciones", function(req, res, next) {
+router.post("/declaraciones", function(req, res, next) {
   let { profile, skip, limit, id, query } = req.body;
   let permissions = getPermissions(profile);
 
