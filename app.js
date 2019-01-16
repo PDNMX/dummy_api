@@ -66,6 +66,7 @@ var catTiposOperacionesRouter = require("./routes/catTiposOperaciones");
 var catTiposRepresentacionesRouter = require("./routes/catTiposRepresentaciones");
 var catTiposVialidadesRouter = require("./routes/catTiposVialidades");
 var catTitularesBienesRouter = require("./routes/catTitularesBienes");
+var catTiposInstitucionesRouter = require("./routes/catTiposInstituciones");
 
 // catalogos
 
@@ -139,6 +140,7 @@ app.use("/catTiposOperaciones", catTiposOperacionesRouter);
 app.use("/catTiposRepresentaciones", catTiposRepresentacionesRouter);
 app.use("/catTiposVialidades", catTiposVialidadesRouter);
 app.use("/catTitularesBienes", catTitularesBienesRouter);
+app.use("/catTiposInstituciones", catTiposInstitucionesRouter);
 // catalogos
 
 module.exports = app;
