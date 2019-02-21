@@ -33,7 +33,7 @@ router.get("/", function(req, res, next) {
   )
     .then(client => {
       let db = client.db(dbmongo.dbname);
-      let collection = db.collection("catLocalicades");
+      let collection = db.collection("catLocalidades");
 
       collection
         .find(query, { projection: { _id: 0 } })
