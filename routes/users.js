@@ -31,7 +31,8 @@ router.post("/login", function(req, res, next) {
       let db = client.db(dbmongo.dbname);
       let collection = db.collection("usuarios");
 
-      console.log(req.query);
+      console.log(require('path').basename(__filename),req.query);
+
 
       const { usuario, clave } = req.body;
 
