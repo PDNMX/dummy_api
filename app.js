@@ -7,6 +7,7 @@ var cors = require("cors");
 var indexRouter = require("./routes/index");
 var s1Router = require("./routes/s1");
 var s1GFRouter = require("./routes/s1_gf");
+var estadisticasRouter = require("./routes/estadisticas");
 
 // inicio declaraciones
 var indexRouter = require("./routes/index");
@@ -75,13 +76,27 @@ app.use(cors());
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
+
+app.use((err, req, res, next) => {
+  // This check makes sure this is a JSON parsing issue, but it might be
+  // coming from any middleware, not just body-parser:
+
+  if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+    console.error(err);
+    return res.sendStatus(400); // Bad request
+  }
+
+  next();
+});
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/api/s1", s1Router);
 app.use("/api/v2/s1", s1GFRouter);
+app.use("/api/v1/estadisticas", estadisticasRouter);
 
 // inicio declaraciones
 app.use("/users", usersRouter);
