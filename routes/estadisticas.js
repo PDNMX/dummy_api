@@ -253,15 +253,19 @@ router.post("/nivel_gobierno", function(req, res, next) {
 
         collection
           .find(query, { projection: { _id: 0 } })
-          .toArray(function(err, result) {
+          .count(function(err, count) {
             if (err) throw err;
 
             data.sistema.nombre = "nivel_gobierno";
             data.res = {
               edad: edad,
               nivel_gobierno: nivel_gobierno,
-              total: result.length
+              total: count
             };
+
+            if (typeof grado_obtenido !== "undefined") {
+              data.res.grado_obtenido=grado_obtenido;
+            }
 
             res.json(data);
           });
@@ -307,13 +311,13 @@ router.post("/entidad_federativa", function(req, res, next) {
 
         collection
           .find(query, { projection: { _id: 0 } })
-          .toArray(function(err, result) {
+          .count(function(err, count) {
             if (err) throw err;
 
             data.sistema.nombre = "entidad_federativa";
             data.res = {
               entidad_federativa: entidad_federativa,
-              total: result.length
+              total: count
             };
 
             delete data.error;
@@ -354,7 +358,7 @@ router.post("/grado_obtenido", function(req, res, next) {
     if (typeof nivel_gobierno !== "undefined") {
       query[
         "informacion_personal.datos_encargo_actual.nivel_gobierno.valor"
-      ] = nivel;
+      ] = nivel_gobierno;
     }
 
     if (typeof edad !== "undefined") {
@@ -395,14 +399,14 @@ router.post("/grado_obtenido", function(req, res, next) {
 
         collection
           .find(query, { projection: { _id: 0 } })
-          .toArray(function(err, result) {
+          .count(function(err, count) {
             if (err) throw err;
 
             data.sistema.nombre = "grado_obtenido";
             data.res = {
               edad: edad,
               grado_obtenido: grado_obtenido,
-              total: result.length
+              total: count
             };
 
             if (typeof nivel_gobierno !== "undefined") {
@@ -467,12 +471,12 @@ router.post("/bienes_inmuebles", function(req, res, next) {
 
             collection
               .find(query, { projection: { _id: 0 } })
-              .toArray(function(err, result) {
+              .count(function(err,count){
                 if (err) throw err;
 
                 data.res = {
                   superficie_terreno: superficie_terreno,
-                  total: result.length
+                  total: count
                 };
 
                 delete data.error;
@@ -516,12 +520,12 @@ router.post("/bienes_inmuebles", function(req, res, next) {
 
             collection
               .find(query, { projection: { _id: 0 } })
-              .toArray(function(err, result) {
+              .count(function(err,count){
                 if (err) throw err;
 
                 data.res = {
                   superficie_construccion: superficie_construccion,
-                  total: result.length
+                  total: count
                 };
 
                 delete data.error;
@@ -586,12 +590,12 @@ router.post("/ingreso_bruto_anual", function(req, res, next) {
 
           collection
             .find(query, { projection: { _id: 0 } })
-            .toArray(function(err, result) {
+            .count(function(err,count){
               if (err) throw err;
 
               data.res = {
                 ingreso_bruto_anual: ingreso_bruto_anual,
-                total: result.length
+                total: count
               };
 
               delete data.error;
