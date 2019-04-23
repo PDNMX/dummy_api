@@ -51,6 +51,7 @@ router.post("/edad", function(req, res, next) {
       mensaje: "numero de parametros de edad incorrecto"
     };
 
+    delete data.res;
     res.json(data);
   } else {
     let _fInicio = getFechaNacimiento(edad.mayor);
@@ -87,6 +88,7 @@ router.post("/edad", function(req, res, next) {
                 total: docs[0].total
               };
 
+              delete data.error;
               res.json(data);
             });
         })
@@ -132,6 +134,7 @@ router.post("/edad", function(req, res, next) {
                     total: tot
                   };
 
+                  delete data.error;
                   res.json(data);
                 });
             })
@@ -176,6 +179,7 @@ router.post("/edad", function(req, res, next) {
                     total: tot
                   };
 
+                  delete data.error;
                   res.json(data);
                 });
             })
@@ -204,6 +208,8 @@ router.post("/nivel_gobierno", function(req, res, next) {
       mensaje: "parametros incorrectos"
     };
 
+    delete data.res;
+
     res.json(data);
   } else {
     query[
@@ -227,6 +233,7 @@ router.post("/nivel_gobierno", function(req, res, next) {
           mensaje: "numero de parametros de edad incorrecto"
         };
 
+        delete data.res;
         res.json(data);
       } else {
         let _fInicio = getFechaNacimiento(edad.mayor);
@@ -267,6 +274,7 @@ router.post("/nivel_gobierno", function(req, res, next) {
               data.res.grado_obtenido=grado_obtenido;
             }
 
+            delete data.error;
             res.json(data);
           });
       })
