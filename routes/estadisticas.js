@@ -42,8 +42,8 @@ router.post("/edad", function(req, res, next) {
 
   if (
     typeof edad === "undefined" ||
-    typeof edad.menor === "undefined" ||
-    typeof edad.mayor === "undefined"
+    typeof edad.minimo === "undefined" ||
+    typeof edad.maximo === "undefined"
   ) {
     data.sistema.nombre = "edad";
     data.error = {
@@ -54,8 +54,8 @@ router.post("/edad", function(req, res, next) {
     delete data.res;
     res.json(data);
   } else {
-    let _fInicio = getFechaNacimiento(edad.mayor);
-    let _fFin = getFechaNacimiento(edad.menor, true);
+    let _fInicio = getFechaNacimiento(edad.maximo);
+    let _fFin = getFechaNacimiento(edad.minimo, true);
 
     query["informacion_personal.informacion_general.fecha_nacimiento_bin"] = {
       $gte: _fInicio,
@@ -224,8 +224,8 @@ router.post("/nivel_gobierno", function(req, res, next) {
 
     if (typeof edad !== "undefined") {
       if (
-        typeof edad.menor === "undefined" ||
-        typeof edad.mayor === "undefined"
+        typeof edad.minimo === "undefined" ||
+        typeof edad.maximo === "undefined"
       ) {
         data.sistema.nombre = "nivel_gobierno";
         data.error = {
@@ -236,8 +236,8 @@ router.post("/nivel_gobierno", function(req, res, next) {
         delete data.res;
         res.json(data);
       } else {
-        let _fInicio = getFechaNacimiento(edad.mayor);
-        let _fFin = getFechaNacimiento(edad.menor, true);
+        let _fInicio = getFechaNacimiento(edad.maximo);
+        let _fFin = getFechaNacimiento(edad.minimo, true);
 
         query[
           "informacion_personal.informacion_general.fecha_nacimiento_bin"
@@ -371,8 +371,8 @@ router.post("/grado_obtenido", function(req, res, next) {
 
     if (typeof edad !== "undefined") {
       if (
-        typeof edad.menor === "undefined" ||
-        typeof edad.mayor === "undefined"
+        typeof edad.minimo === "undefined" ||
+        typeof edad.maximo === "undefined"
       ) {
         data.sistema.nombre = "grado_obtenido";
         data.error = {
@@ -383,8 +383,8 @@ router.post("/grado_obtenido", function(req, res, next) {
         delete data.res;
         res.json(data);
       } else {
-        let _fInicio = getFechaNacimiento(edad.mayor);
-        let _fFin = getFechaNacimiento(edad.menor, true);
+        let _fInicio = getFechaNacimiento(edad.maximo);
+        let _fFin = getFechaNacimiento(edad.minimo, true);
 
         query[
           "informacion_personal.informacion_general.fecha_nacimiento_bin"
@@ -450,8 +450,8 @@ router.post("/bienes_inmuebles", function(req, res, next) {
   } else {
     if (typeof superficie_terreno !== "undefined") {
       if (
-        typeof superficie_terreno.menor === "undefined" ||
-        typeof superficie_terreno.mayor === "undefined"
+        typeof superficie_terreno.minimo === "undefined" ||
+        typeof superficie_terreno.maximo === "undefined"
       ) {
         data.error = {
           numero: 11,
@@ -463,8 +463,8 @@ router.post("/bienes_inmuebles", function(req, res, next) {
         res.json(data);
       } else {
         query["activos.bienes_inmuebles.superficie_terreno"] = {
-          $gte: superficie_terreno.menor,
-          $lte: superficie_terreno.mayor
+          $gte: superficie_terreno.minimo,
+          $lte: superficie_terreno.maximo
         };
 
         MongoClient.connect(
@@ -499,8 +499,8 @@ router.post("/bienes_inmuebles", function(req, res, next) {
 
     if (typeof superficie_construccion !== "undefined") {
       if (
-        typeof superficie_construccion.menor === "undefined" ||
-        typeof superficie_construccion.mayor === "undefined"
+        typeof superficie_construccion.minimo === "undefined" ||
+        typeof superficie_construccion.maximo === "undefined"
       ) {
         data.error = {
           numero: 11,
@@ -512,8 +512,8 @@ router.post("/bienes_inmuebles", function(req, res, next) {
         res.json(data);
       } else {
         query["activos.bienes_inmuebles.superficie_construccion"] = {
-          $gte: superficie_construccion.menor,
-          $lte: superficie_construccion.mayor
+          $gte: superficie_construccion.minimo,
+          $lte: superficie_construccion.maximo
         };
 
         MongoClient.connect(
@@ -569,8 +569,8 @@ router.post("/ingreso_bruto_anual", function(req, res, next) {
 
   if (typeof ingreso_bruto_anual !== "undefined") {
     if (
-      typeof ingreso_bruto_anual.menor === "undefined" ||
-      typeof ingreso_bruto_anual.mayor === "undefined"
+      typeof ingreso_bruto_anual.minimo === "undefined" ||
+      typeof ingreso_bruto_anual.maximo === "undefined"
     ) {
       data.error = {
         numero: 11,
@@ -582,8 +582,8 @@ router.post("/ingreso_bruto_anual", function(req, res, next) {
       res.json(data);
     } else {
       query["ingresos.sueldos_salarios_publicos.ingreso_bruto_anual.valor"] = {
-        $gte: ingreso_bruto_anual.menor,
-        $lte: ingreso_bruto_anual.mayor
+        $gte: ingreso_bruto_anual.minimo,
+        $lte: ingreso_bruto_anual.maximo
       };
 
       MongoClient.connect(
