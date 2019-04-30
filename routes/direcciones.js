@@ -17,7 +17,7 @@ router.get('/entidades', function(req, res, next) {
     let collection = db.collection('direcciones');
 
 
-    collection.find({}).toArray(function(err, result) {
+    collection.find({}, { projection: { _id: 0 } }).toArray(function(err, result) {
       if (err) throw err;
       console.log(result);
       res.json({

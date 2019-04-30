@@ -18,12 +18,7 @@ router.get("/", function(req, res, next) {
       let collection = db.collection("estatusEstudio");
 
       collection
-        .find(
-          {},
-          {
-            _id: false
-          }
-        )
+        .find({}, { projection: { _id: 0 } })
         .toArray(function(err, result) {
           if (err) throw err;
           //console.log(result);

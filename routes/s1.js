@@ -248,7 +248,8 @@ router.get('/declaraciones',cors(), (req, res) => {
         let db = client.db(dbName);
         let collection = db.collection('s1');
 
-        console.log(req.query);
+        console.log(require('path').basename(__filename),req.query);
+
 
         const {id, skip, limit, profile, nombres, primer_apellido, segundo_apellido} = req.query;
 
