@@ -1,4 +1,4 @@
-# API de Declaraciones
+# API de Declaraciones [![Build Status](https://travis-ci.org/PDNMX/dummy_api.svg?branch=master)](https://travis-ci.org/PDNMX/dummy_api)
 
 ## ¿Qué es y para qué sirve?
 API para el *Sistema de Declaraciones* con dos endpoints:
