@@ -23,6 +23,8 @@ if (DB_USER !== '' && DB_PASSWORD !== '') {
 // Database Name
 const dbName = process.env.DB_NAME;
 
+console.log (url);
+
 /* GET users listing. */
 router.get('/', function(req, res, next) {
     res.json({
@@ -246,7 +248,8 @@ router.get('/declaraciones',cors(), (req, res) => {
         let db = client.db(dbName);
         let collection = db.collection('s1');
 
-        console.log(req.query);
+        console.log(require('path').basename(__filename),req.query);
+
 
         const {id, skip, limit, profile, nombres, primer_apellido, segundo_apellido} = req.query;
 
@@ -323,6 +326,7 @@ router.get('/declaraciones',cors(), (req, res) => {
         }
 
     }).catch(error => {
+        res.status(500).json(error);
         console.log(error);
     });
 

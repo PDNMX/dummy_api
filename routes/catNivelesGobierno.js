@@ -22,8 +22,7 @@ router.get("/", function(req, res, next) {
     query.codigo = codigo;
   }
 
-  console.log(req.query);
-  console.log(query);
+  console.log(require('path').basename(__filename),req.query);
 
   MongoClient.connect(
     dbmongo.url,

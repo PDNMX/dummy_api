@@ -104,6 +104,64 @@ router.post("/declaraciones", function(req, res, next) {
             ];
           }
 
+          campo =
+            "ingresos.sueldos_salarios_publicos.ingreso_bruto_anual.valor";
+          if (typeof query[campo] !== "undefined") {
+            dato = query[campo];
+
+            if (Object.keys(dato).length == 2) {
+              if (
+                typeof dato.desde !== "undefined" &&
+                typeof dato.hasta !== "undefined"
+              ) {
+                query[campo] = {
+                  $gte: dato.desde,
+                  $lte: dato.hasta
+                };
+              }
+            } else {
+              query[campo] = dato.desde;
+            }
+          }
+
+          campo = "activos.bienes_inmuebles.superficie_construccion";
+          if (typeof query[campo] !== "undefined") {
+            dato = query[campo];
+
+            if (Object.keys(dato).length == 2) {
+              if (
+                typeof dato.desde !== "undefined" &&
+                typeof dato.hasta !== "undefined"
+              ) {
+                query[campo] = {
+                  $gte: dato.desde,
+                  $lte: dato.hasta
+                };
+              }
+            } else {
+              query[campo] = dato.desde;
+            }
+          }
+
+          campo = "activos.bienes_inmuebles.superficie_terreno";
+          if (typeof query[campo] !== "undefined") {
+            dato = query[campo];
+
+            if (Object.keys(dato).length == 2) {
+              if (
+                typeof dato.desde !== "undefined" &&
+                typeof dato.hasta !== "undefined"
+              ) {
+                query[campo] = {
+                  $gte: dato.desde,
+                  $lte: dato.hasta
+                };
+              }
+            } else {
+              query[campo] = dato.desde;
+            }
+          }
+
           if (
             typeof query["informacion_personal.informacion_general.nombres"] !==
             "undefined"
@@ -180,6 +238,7 @@ router.post("/declaraciones", function(req, res, next) {
     })
     .catch(error => {
       console.log(error);
+      res.status(500).json(error);
     });
 });
 

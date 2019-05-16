@@ -65,3 +65,4 @@ typings/
 
 #variables entorno benito
 env_dev.sh
+package-lock.json

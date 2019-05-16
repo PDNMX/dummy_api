@@ -15,7 +15,8 @@ router.get('/', function(req, res, next) {
 
     let db = client.db(dbmongo.dbname);
     let collection = db.collection('localidades');
-    console.log(req.query);
+    console.log(require('path').basename(__filename),req.query);
+
 
     collection.find(req.query).toArray(function(err, result) {
       if (err) throw err;
