@@ -1,4 +1,5 @@
 var express = require("express");
+var request = require('request');
 var router = express.Router();
 
 var dbmongo = require("./database_config");
@@ -28,9 +29,27 @@ const getFechaNacimiento = function(_edad, _fin = false) {
 
 /* GET users listing. */
 
+// URL de catalagos
+const catNivelOrdenGobierno = "https://raw.githubusercontent.com/PDNMX/catalogos/master/catNivelOrdenGobierno.json";
+const catGradoAcademico = "https://raw.githubusercontent.com/PDNMX/catalogos/master/catGradoAcademico.json";
+let url = "https://api.chucknorris.io/jokes/random";
+
+// Obtiene info de API
+let getCatalago = (url) => {
+  return new Promise(
+    (resolve, reject) => {
+      request.get(url, function(error, response, data){
+        if (error) reject(error);
+        let content = JSON.parse(data);
+        // let fact = content.value;
+        resolve(content);
+      })
+   }
+ );
+};
+
 router.get("/", function(req, res, next) {
   data.sistema.nombre = "Estadisticas";
-
   res.json(data);
 });
 
@@ -54,8 +73,8 @@ router.get("/edad", function(req, res, next) {
         let edadMax = parseInt(i+10);
         min = getFechaNacimiento(edadMin);
         max = getFechaNacimiento(edadMax);
-        console.log(max);
-        console.log(min);
+        // console.log(max);
+        // console.log(min);
         allDbRequest.push(
           collection.find({"informacion_personal.informacion_general.fecha_nacimiento_bin" : {$gte: max, $lte: min}}).count().then((count) => {
             let api = new Object({
@@ -85,54 +104,68 @@ router.get("/edad", function(req, res, next) {
   router.get("/edad-nivel", function(req, res, next) {
     let array_api = new Array();
     let objApi = new Object();
-    MongoClient.connect(
-      dbmongo.url,
-      {
-        useNewUrlParser: true
-      }
-    )
-      .then(client => {
-        let db = client.db(dbmongo.dbname);
-        let collection = db.collection("s1");
-        let max;
-        let min;
-        let allDbRequest = [];
-        for (i = 18; i < 120; i+=10) {
-          let edadMin = parseInt(i);
-          let edadMax = parseInt(i+10);
-          min = getFechaNacimiento(edadMin);
-          max = getFechaNacimiento(edadMax);
-          console.log(max);
-          console.log(min);
-          allDbRequest.push(
-            collection.find({$and: [
-              {"informacion_personal.informacion_general.fecha_nacimiento_bin" : {$gte: max, $lte: min}},
-              {"informacion_personal.datos_encargo_actual.nivel_gobierno.valor": "Federal"}
-            ]}
-          ).count().then((count) => {
-              let api = new Object({
-                "edad": "",
-                "total": 0
-              });
-              api.edad = `${edadMin}-${edadMax}`;
-              api.total = count;
-              return api;
-            }, (err) => {
-              console.log('Unable to fetch', err);
-            })
-          )// ARRAY Push;
-        } // FOR
-          Promise.all(allDbRequest).then(function (results) {
-              // console.log(results);
-              res.json(results);
-          }).catch(function (error) {
-               console.log(`Error al realizar la consulta: ${error.message}`);
-          });
-      })
-      .catch(error => {
-        console.log(`Error al conectar con mongo: ${error.message}`);
-      });
-    });
+    getCatalago(catNivelOrdenGobierno).then(
+       nivelOrdenGobierno => {
+       // MONGO
+       MongoClient.connect(
+         dbmongo.url,
+         {
+           useNewUrlParser: true
+         }
+       )
+         .then(client => {
+           let db = client.db(dbmongo.dbname);
+           let collection = db.collection("s1");
+           let max;
+           let min;
+           let allDbRequest = [];
+           for (i = 0; i < nivelOrdenGobierno.length; i++) {
+             for (j = 18; j < 120; j+=10) {
+               let edadMin = parseInt(j);
+               let edadMax = parseInt(j+10);
+               min = getFechaNacimiento(edadMin);
+               max = getFechaNacimiento(edadMax);
+               // console.log(max);
+               // console.log(min);
+               // console.log(nivelOrdenGobierno[j].valor);
+               let gobierno = nivelOrdenGobierno[i].valor;
+               allDbRequest.push(
+                 collection.find({$and: [
+                   {"informacion_personal.informacion_general.fecha_nacimiento_bin" : {$gte: max, $lte: min}},
+                   {"informacion_personal.datos_encargo_actual.nivel_gobierno.valor": gobierno}
+                 ]}
+               ).count().then((count) => {
+                   let api = new Object({
+                     "total": 0,
+                     "propiedades": {
+                       "edad": "",
+                       "nivelGobierno": ""
+                     }
+                   });
+                   api.propiedades.edad = `${edadMin}-${edadMax}`;
+                   api.propiedades.nivelGobierno = gobierno;
+                   api.total = count;
+                   return api;
+                 }, (err) => {
+                   console.log('Unable to fetch', err);
+                 })
+               )// ARRAY Push;
+             } // FOR Edad
+           } // FOR Nivel
+           Promise.all(allDbRequest).then(function (results) {
+               // console.log(results);
+               res.json(results);
+           }).catch(function (error) {
+                console.log(`Error al realizar la consulta: ${error.message}`);
+           });
+         })
+         .catch(error => {
+           console.log(`Error al conectar con mongo: ${error.message}`);
+         });
+    }).catch(
+       error => console.log(error)
+    );
+  });
 
 
 //
