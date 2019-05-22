@@ -30,6 +30,7 @@ const getFechaNacimiento = function(_edad, _fin = false) {
 // URL de catalagos
 const catNivelOrdenGobierno = "https://raw.githubusercontent.com/PDNMX/catalogos/master/catNivelOrdenGobierno.json";
 const catGradoAcademico = "https://raw.githubusercontent.com/PDNMX/catalogos/master/catGradoAcademico.json";
+const catEntidadesFederativas = "https://gaia.inegi.org.mx/wscatgeo/mgee/";
 
 // Obtiene info de API
 let getCatalago = (url) => {
@@ -51,8 +52,6 @@ router.get("/", function(req, res, next) {
 });
 
 router.get("/edad", function(req, res, next) {
-  let array_api = new Array();
-  let objApi = new Object();
   MongoClient.connect(
     dbmongo.url,
     {
@@ -75,10 +74,12 @@ router.get("/edad", function(req, res, next) {
         allDbRequest.push(
           collection.find({"informacion_personal.informacion_general.fecha_nacimiento_bin" : {$gte: max, $lte: min}}).count().then((count) => {
             let api = new Object({
-              "edad": "",
-              "total": 0
+              "total": 0,
+              "propiedades": {
+                "edad": ""
+              }
             });
-            api.edad = `${edadMin}-${edadMax}`;
+            api.propiedades.edad = `${edadMin}-${edadMax}`;
             api.total = count;
             return api;
           }, (err) => {
@@ -99,8 +100,6 @@ router.get("/edad", function(req, res, next) {
   });
 
 router.get("/edad-gobierno", function(req, res, next) {
-  let array_api = new Array();
-  let objApi = new Object();
   getCatalago(catNivelOrdenGobierno).then(
      nivelOrdenGobierno => {
      // MONGO
@@ -165,8 +164,6 @@ router.get("/edad-gobierno", function(req, res, next) {
 });
 
 router.get("/edad-educacion", function(req, res, next) {
-  let array_api = new Array();
-  let objApi = new Object();
   getCatalago(catGradoAcademico).then(
      gradoAcademico => {
        // console.log(gradoAcademico)
@@ -231,7 +228,369 @@ router.get("/edad-educacion", function(req, res, next) {
   );
 });
 
+router.get("/gobierno", function(req, res, next) {
+  getCatalago(catNivelOrdenGobierno).then(
+    nivelOrdenGobierno => {
+     // MONGO
+     MongoClient.connect(
+       dbmongo.url,
+       {
+         useNewUrlParser: true
+       }
+     )
+       .then(client => {
+         let db = client.db(dbmongo.dbname);
+         let collection = db.collection("s1");
+         let max;
+         let min;
+         let allDbRequest = [];
+         for (i = 0; i < nivelOrdenGobierno.length; i++) {
+          let gobierno = nivelOrdenGobierno[i].valor;
+          allDbRequest.push(
+            collection.find({$and: [
+              {"informacion_personal.datos_encargo_actual.nivel_gobierno.valor": gobierno}
+            ]}
+          ).count().then((count) => {
+              let api = new Object({
+                "total": 0,
+                "propiedades": {
+                  "nivelGobierno": ""
+                }
+              });
+              api.propiedades.nivelGobierno = gobierno;
+              api.total = count;
+              return api;
+            }, (err) => {
+              console.log('Unable to fetch', err);
+            })
+          )// ARRAY Push;
+         } // FOR Nivel
+         Promise.all(allDbRequest).then(function (results) {
+             res.json(results);
+         }).catch(function (error) {
+              console.log(`Error al realizar la consulta: ${error.message}`);
+         });
+       })
+       .catch(error => {
+         console.log(`Error al conectar con mongo: ${error.message}`);
+       });
+  }).catch(
+     error => console.log(error)
+  );
+});
 
+router.get("/gobierno-educacion", function(req, res, next) {
+  getCatalago(catNivelOrdenGobierno).then(
+    nivelOrdenGobierno => {
+      getCatalago(catGradoAcademico).then(
+        gradoAcademico => {
+          // MONGO
+          MongoClient.connect(
+            dbmongo.url,
+            {
+              useNewUrlParser: true
+            }
+          )
+            .then(client => {
+              let db = client.db(dbmongo.dbname);
+              let collection = db.collection("s1");
+              let max;
+              let min;
+              let allDbRequest = [];
+              for (i = 0; i < nivelOrdenGobierno.length; i++) {
+                for(j=0; j < gradoAcademico.length; j++){
+                  let educacion = gradoAcademico[j].valor;
+                  let gobierno = nivelOrdenGobierno[i].valor;
+                  allDbRequest.push(
+                    collection.find({$and: [
+                      {"informacion_personal.datos_encargo_actual.nivel_gobierno.valor": gobierno},
+                      {"informacion_personal.datos_curriculares.grado_maximo_escolaridad.valor": educacion}
+                    ]}
+                  ).count().then((count) => {
+                      let api = new Object({
+                        "total": 0,
+                        "propiedades": {
+                          "nivelGobierno": "",
+                          "nivelEducativo": ""
+                        }
+                      });
+                      api.propiedades.nivelGobierno = gobierno;
+                      api.propiedades.nivelEducativo = educacion;
+                      api.total = count;
+                      return api;
+                    }, (err) => {
+                      console.log('Unable to fetch', err);
+                    })
+                  )// ARRAY Push;
+                }
+              } // FOR Nivel
+              Promise.all(allDbRequest).then(function (results) {
+                  res.json(results);
+              }).catch(function (error) {
+                    console.log(`Error al realizar la consulta: ${error.message}`);
+              });
+            })
+            .catch(error => {
+              console.log(`Error al conectar con mongo: ${error.message}`);
+            });        
+        }).catch(
+          error => console.log(error)
+      );
+
+  }).catch(
+     error => console.log(error)
+  );
+});
+
+router.get("/estatal", function(req, res, next) {
+  getCatalago(catEntidadesFederativas).then(
+    entidadesFederativas => {
+      console.log(entidadesFederativas);
+      // MONGO
+      MongoClient.connect(
+        dbmongo.url,
+        {
+          useNewUrlParser: true
+        }
+      )
+        .then(client => {
+          let db = client.db(dbmongo.dbname);
+          let collection = db.collection("s1");
+          let allDbRequest = [];
+          for (i = 0; i < entidadesFederativas.datos.length; i++) {
+              let entidades = parseInt(entidadesFederativas.datos[i].cve_agee);
+              let nombre = entidadesFederativas.datos[i].nom_agee;
+              allDbRequest.push(
+                collection.find({$and: [
+                  {"informacion_personal.datos_encargo_actual.direccion_encargo.entidad_federativa.cve_agee": entidades+""}
+                ]}
+              ).count().then((count) => {
+                  let api = new Object({
+                    "total": 0,
+                    "propiedades": {
+                      "entidadFederativa": ""
+                    }
+                  });
+                  api.propiedades.entidadFederativa = nombre;
+                  api.total = count;
+                  return api;
+                }, (err) => {
+                  console.log('Unable to fetch', err);
+                })
+              )// ARRAY Push;
+          } // FOR Nivel
+          Promise.all(allDbRequest).then(function (results) {
+              res.json(results);
+          }).catch(function (error) {
+                console.log(`Error al realizar la consulta: ${error.message}`);
+          });
+        })
+        .catch(error => {
+          console.log(`Error al conectar con mongo: ${error.message}`);
+        });        
+
+  }).catch(
+     error => console.log(error)
+  );
+});
+
+
+router.get("/educacion", function(req, res, next) {
+  getCatalago(catGradoAcademico).then(
+    gradoAcademico => {
+      //console.log(gradoAcademico);
+      // MONGO
+      MongoClient.connect(
+        dbmongo.url,
+        {
+          useNewUrlParser: true
+        }
+      )
+        .then(client => {
+          let db = client.db(dbmongo.dbname);
+          let collection = db.collection("s1");
+          let allDbRequest = [];
+          for (i = 0; i < gradoAcademico.length; i++) {
+              let educacion = gradoAcademico[i].valor;
+              allDbRequest.push(
+                collection.find({"informacion_personal.datos_curriculares.grado_maximo_escolaridad.valor": educacion}
+              ).count().then((count) => {
+                  let api = new Object({
+                    "total": 0,
+                    "propiedades": {
+                      "nivelEducativo": ""
+                    }
+                  });
+                  api.propiedades.nivelEducativo = educacion;
+                  api.total = count;
+                  return api;
+                }, (err) => {
+                  console.log('Unable to fetch', err);
+                })
+              )// ARRAY Push;
+          } // FOR Nivel
+          Promise.all(allDbRequest).then(function (results) {
+              res.json(results);
+          }).catch(function (error) {
+                console.log(`Error al realizar la consulta: ${error.message}`);
+          });
+        })
+        .catch(error => {
+          console.log(`Error al conectar con mongo: ${error.message}`);
+        });        
+
+  }).catch(
+     error => console.log(error)
+  );
+});
+
+
+router.get("/superficie-terreno", function(req, res, next) {
+  let paramsQuery;
+  if(!isNaN(parseInt(req.query.min, 10)) && !isNaN(parseInt(req.query.max, 10)) && req.query.max >= req.query.min)
+  {
+    let min = Number(req.query.min);
+    let max = Number(req.query.max);
+    paramsQuery = {"activos.bienes_inmuebles.superficie_terreno": {$gte: min, $lte: max}};
+  } else {
+    paramsQuery = {};
+  }
+  MongoClient.connect(
+    dbmongo.url,
+    {
+      useNewUrlParser: true
+    }
+  )
+  .then(client => {
+    let db = client.db(dbmongo.dbname);
+    let collection = db.collection("s1");
+    collection.aggregate(
+      { $unwind: "$activos.bienes_inmuebles" },
+      { $match: paramsQuery},
+      { $group: { "_id": "$activos.bienes_inmuebles.superficie_terreno", "count": { $sum: 1 } } },
+      { $project: {"_id": 1, "count": 1 } }
+    ).toArray(function(err, docs) {
+      let arrayApi = new Array();
+      var reformattedArray = docs.map(obj =>{
+         var api = {
+           "total": 0,
+           "propiedades": {
+             "superficieTerreno": 0
+           }
+         };
+         api.total = obj.count;
+         api.propiedades.superficieTerreno = obj._id;
+         arrayApi.push(api);
+      });
+      res.json(arrayApi);
+    });
+    // .toArray()
+    // .then(results => {
+    //   console.log(JSON.stringify(results))
+    // })
+  })
+  .catch(error => {
+    console.log(error);
+  });
+});
+
+router.get("/superficie-construccion", function(req, res, next) {
+  let paramsQuery;
+  if(!isNaN(parseInt(req.query.min, 10)) && !isNaN(parseInt(req.query.max, 10)) && req.query.max >= req.query.min)
+  {
+    let min = Number(req.query.min);
+    let max = Number(req.query.max);
+    paramsQuery = {"activos.bienes_inmuebles.superficie_construccion": {$gte: min, $lte: max}};
+  } else {
+    paramsQuery = {};
+  }
+  MongoClient.connect(
+    dbmongo.url,
+    {
+      useNewUrlParser: true
+    }
+  )
+  .then(client => {
+    let db = client.db(dbmongo.dbname);
+    let collection = db.collection("s1");
+    collection.aggregate(
+      { $unwind: "$activos.bienes_inmuebles" },
+      { $match: paramsQuery},
+      { $group: { "_id": "$activos.bienes_inmuebles.superficie_construccion", "count": { $sum: 1 } } },
+      { $project: {"_id": 1, "count": 1 } }
+    ).toArray(function(err, docs) {
+      let arrayApi = new Array();
+      var reformattedArray = docs.map(obj =>{
+         var api = {
+           "total": 0,
+           "propiedades": {
+             "superficieConstruccion": 0
+           }
+         };
+         api.total = obj.count;
+         api.propiedades.superficieConstruccion = obj._id;
+         arrayApi.push(api);
+      });
+      res.json(arrayApi);
+    });
+    // .toArray()
+    // .then(results => {
+    //   console.log(JSON.stringify(results))
+    // })
+  })
+  .catch(error => {
+    console.log(error);
+  });
+});
+
+router.get("/ingresos", function(req, res, next) {
+  let paramsQuery;
+  if(!isNaN(parseInt(req.query.min, 10)) && !isNaN(parseInt(req.query.max, 10)) && req.query.max >= req.query.min)
+  {
+    let min = Number(req.query.min);
+    let max = Number(req.query.max);
+    paramsQuery = {"ingresos.sueldos_salarios_publicos.ingreso_bruto_anual.valor": {$gte: min, $lte: max}};
+  } else {
+    paramsQuery = {};
+  }
+  MongoClient.connect(
+    dbmongo.url,
+    {
+      useNewUrlParser: true
+    }
+  )
+  .then(client => {
+    let db = client.db(dbmongo.dbname);
+    let collection = db.collection("s1");
+    collection.aggregate(
+      { $unwind: "$ingresos.sueldos_salarios_publicos" },
+      { $match: paramsQuery},
+      { $group: { "_id": "$ingresos.sueldos_salarios_publicos.ingreso_bruto_anual.valor", "count": { $sum: 1 } } },
+      { $project: {"_id": 1, "count": 1 } }
+    ).toArray(function(err, docs) {
+      let arrayApi = new Array();
+      var reformattedArray = docs.map(obj =>{
+         var api = {
+           "total": 0,
+           "propiedades": {
+             "ingresoAnual": 0
+           }
+         };
+         api.total = obj.count;
+         api.propiedades.ingresoAnual = obj._id;
+         arrayApi.push(api);
+      });
+      res.json(arrayApi);
+    });
+    // .toArray()
+    // .then(results => {
+    //   console.log(JSON.stringify(results))
+    // })
+  })
+  .catch(error => {
+    console.log(error);
+  });
+});
 //
 // router.post("/edad", function(req, res, next) {
 //   let { edad, tipo } = req.body;

@@ -15,7 +15,7 @@ let url = "mongodb://" + MONGO_HOST + ":" + MONGO_PORT;
 if (MONGO_USER !== "" && MONGO_PASS !== "") {
   url = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}`;
   // url = `mongodb://${MONGO_USER}:${MONGO_PASS}@${MONGO_HOST}:${MONGO_PORT}/?authMechanism=${MONGO_AUTHMECHANISM}&authSource=${MONGO_DBAUTH}`;
-  console.log(url);
+  /*   console.log(url); */
 }
 
 module.exports = {
