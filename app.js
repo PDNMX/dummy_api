@@ -10,7 +10,7 @@ var s1GFRouter = require("./routes/s1_gf");
 var estadisticasRouter = require("./routes/estadisticas");
 
 // inicio declaraciones
-var indexRouter = require("./routes/index");
+//var indexRouter = require("./routes/index"); // duplicated declaration
 var usersRouter = require("./routes/users");
 var ciudadesRouter = require("./routes/ciudades");
 var entidadesRouter = require("./routes/entidades");
@@ -70,6 +70,10 @@ var catTitularesBienesRouter = require("./routes/catTitularesBienes");
 var catTiposInstitucionesRouter = require("./routes/catTiposInstituciones");
 
 // catalogos
+
+
+//Sistema 6 - Contrataciones
+var indexContrataciones = require('./routes/s6/index');
 
 var app = express();
 app.use(cors());
@@ -157,5 +161,8 @@ app.use("/catTiposVialidades", catTiposVialidadesRouter);
 app.use("/catTitularesBienes", catTitularesBienesRouter);
 app.use("/catTiposInstituciones", catTiposInstitucionesRouter);
 // catalogos
+
+//S6 - contrataciones
+app.use("/api/s6", indexContrataciones);
 
 module.exports = app;
