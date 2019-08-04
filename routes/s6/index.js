@@ -27,7 +27,26 @@ router.get('/summary', (req, res) => {
 });
 
 
-router.get('/search', (req, res)=> {
+router.post('/search', (req, res)=> {
+    const MAX_RESULTS = 10;
+
+    let limit = req.body.limit || MAX_RESULTS;
+    let skip = req.body.skip || 0;
+
+    if (isNaN(skip)){
+        skip = 0;
+    } else {
+        skip = Math.abs(skip)
+    }
+
+    if (isNaN(limit)){
+     limit = MAX_RESULTS;
+    }else{
+        limit = Math.abs(limit);
+        limit = limit > 200?200:limit;
+    }
+
+
     MongoClient.connect(dbConfig.url,{
         useNewUrlParser: true
     }).then( client => {
@@ -39,8 +58,8 @@ router.get('/search', (req, res)=> {
         };
 
         let options = {
-            limit : 2,
-            skip : 0,
+            limit : limit,
+            skip : skip,
         };
 
 
@@ -49,7 +68,7 @@ router.get('/search', (req, res)=> {
             collection.find(query, options).toArray((error, data) => {
                 res.json ({
                     pagination: {
-                        total : count ,
+                        total : count,
                         skip: options.skip,
                         limit: options.limit
                     },
