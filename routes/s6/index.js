@@ -22,16 +22,22 @@ router.get('/summary', (req, res) => {
 
         let queries  = [
             collection.countDocuments(),
-            collection.distinct("buyer.name")
+            collection.distinct("buyer.name"),
+            collection.countDocuments({"tender.procurementMethod": { $regex: "open", $options: "i"}}),
+            collection.countDocuments({"tender.procurementMethod": { $regex: "selective", $options: "i"}}),
+            collection.countDocuments({"tender.procurementMethod": { $regex: "direct", $options: "i"}})
         ];
 
         Promise.all(queries).then( d => {
             res.json({
                 procedimientos: d[0],
-                instituciones: d[1]
+                instituciones: d[1],
+                open: d[2],
+                selective: d[3],
+                direct: d[4]
             })
         })
-        
+
     }).catch(error => {
         console.log(error)
     })
