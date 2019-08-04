@@ -34,7 +34,8 @@ router.get('/summary', (req, res) => {
                 instituciones: d[1],
                 open: d[2],
                 selective: d[3],
-                direct: d[4]
+                direct: d[4],
+                other: (d[0] - (d[2] + d[3] + d[4]))
             })
         })
 
