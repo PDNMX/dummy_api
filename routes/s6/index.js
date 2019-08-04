@@ -17,9 +17,21 @@ router.get('/summary', (req, res) => {
         useNewUrlParser: true
     }).then(client => {
         let db = client.db(dbConfig.dbname);
-        db.collection('edca_records').countDocuments().then( data => {
-            res.json({ total: data})
+        let collection = db.collection('edca_releases');
+
+
+        let queries  = [
+            collection.countDocuments(),
+            collection.distinct("buyer.name")
+        ];
+
+        Promise.all(queries).then( d => {
+            res.json({
+                procedimientos: d[0],
+                instituciones: d[1]
+            })
         })
+        
     }).catch(error => {
         console.log(error)
     })
