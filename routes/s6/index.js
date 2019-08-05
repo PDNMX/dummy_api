@@ -51,6 +51,7 @@ router.post('/search', (req, res)=> {
 
     let limit = req.body.limit || MAX_RESULTS;
     let skip = req.body.skip || 0;
+    let {contract_title, ocid} = req.body;
 
     if (isNaN(skip)){
         skip = 0;
@@ -75,6 +76,14 @@ router.post('/search', (req, res)=> {
 
         let query = {
         };
+
+        if (typeof contract_title !== 'undefined'){
+            query["contracts.title"] = {$regex: contract_title, $options: 'i'};
+        }
+
+        if (typeof  ocid !==  'undefined'){
+            query["ocid"] = ocid
+        }
 
         let options = {
             limit : limit,
