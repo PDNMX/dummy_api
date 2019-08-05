@@ -49,21 +49,21 @@ router.get('/summary', (req, res) => {
 router.post('/search', (req, res)=> {
     const MAX_RESULTS = 10;
 
-    let limit = req.body.limit || MAX_RESULTS;
-    let skip = req.body.skip || 0;
+    let pageSize = req.body.pageSize || MAX_RESULTS;
+    let page = req.body.page || 0;
     let {contract_title, ocid} = req.body;
 
-    if (isNaN(skip)){
-        skip = 0;
+    if (isNaN(page)){
+        page = 0;
     } else {
-        skip = Math.abs(skip)
+        page = Math.abs(page)
     }
 
-    if (isNaN(limit)){
-     limit = MAX_RESULTS;
+    if (isNaN(pageSize)){
+     pageSize = MAX_RESULTS;
     }else{
-        limit = Math.abs(limit);
-        limit = limit > 200?200:limit;
+        pageSize = Math.abs(pageSize);
+        pageSize = pageSize > 200?200:pageSize;
     }
 
 
@@ -86,8 +86,8 @@ router.post('/search', (req, res)=> {
         }
 
         let options = {
-            limit : limit,
-            skip : skip,
+            limit : pageSize,
+            skip : page * pageSize,
         };
 
 
@@ -97,8 +97,8 @@ router.post('/search', (req, res)=> {
                 res.json ({
                     pagination: {
                         total : count,
-                        skip: options.skip,
-                        limit: options.limit
+                        page: page,
+                        pageSize: pageSize
                     },
                     data: data,
                 });
