@@ -118,7 +118,15 @@ router.get('/releases/:ocid', (req, res) => {
         const db = client.db(dbConfig.dbname);
 
 
-        db.collection('edca_releases').find({ocid: ocid}).toArray((error, data) => res.json(data));
+        db.collection('edca_releases').find({ocid: ocid}).toArray((error, data) => {
+            //res.json(data);
+
+            const text=JSON.stringify(data, null, 4);
+            res.setHeader('Content-type', "application/octet-stream");
+            res.setHeader('Content-disposition', 'attachment; filename='+ocid+'.json');
+
+            res.send(text);
+        });
 
     });
 });
@@ -133,7 +141,15 @@ router.get('/records/:ocid', (req, res) => {
 
         const db = client.db(dbConfig.dbname);
 
-        db.collection('edca_records').find({"records.ocid": ocid}).toArray((error, data) => res.json(data));
+        db.collection('edca_records').find({"records.ocid": ocid}).toArray((error, data) => {
+            //res.json(data)
+
+            const text=JSON.stringify(data, null, 4);
+            res.setHeader('Content-type', "application/octet-stream");
+            res.setHeader('Content-disposition', 'attachment; filename='+ocid+'.json');
+
+            res.send(text);
+        });
     })
 });
 
