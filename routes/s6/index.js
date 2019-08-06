@@ -31,7 +31,7 @@ router.get('/summary', (req, res) => {
         Promise.all(queries).then( d => {
             res.json({
                 procedimientos: d[0],
-                instituciones: d[1],
+                instituciones: d[1].length,
                 open: d[2],
                 selective: d[3],
                 direct: d[4],
