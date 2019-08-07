@@ -17,16 +17,17 @@ router.get('/summary', (req, res) => {
         useNewUrlParser: true
     }).then(client => {
         let db = client.db(dbConfig.dbname);
-        let collection = db.collection('edca_releases');
+        let releases = db.collection('edca_releases');
+        let contracts = db.collection('edca_contracts');
 
 
         let queries  = [
-            collection.countDocuments(),
-            collection.distinct("buyer.name"),
-            collection.countDocuments({"tender.procurementMethod": { $regex: "open", $options: "i"}}),
-            collection.countDocuments({"tender.procurementMethod": { $regex: "selective", $options: "i"}}),
-            collection.countDocuments({"tender.procurementMethod": { $regex: "direct", $options: "i"}}),
-            collection.aggregate([
+            releases.countDocuments(),
+            releases.distinct("buyer.name"),
+            releases.countDocuments({"tender.procurementMethod": { $regex: "open", $options: "i"}}),
+            releases.countDocuments({"tender.procurementMethod": { $regex: "selective", $options: "i"}}),
+            releases.countDocuments({"tender.procurementMethod": { $regex: "direct", $options: "i"}}),
+            contracts.aggregate([
                 {$unwind: '$contracts'},
                 {
                     $group :{
