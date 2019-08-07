@@ -18,7 +18,7 @@ router.get('/summary', (req, res) => {
     }).then(client => {
         let db = client.db(dbConfig.dbname);
         let releases = db.collection('edca_releases');
-        let contracts = db.collection('edca_contracts');
+        let totalAmount = db.collection('edca_contracts_total');
 
 
         let queries  = [
@@ -27,31 +27,19 @@ router.get('/summary', (req, res) => {
             releases.countDocuments({"tender.procurementMethod": { $regex: "open", $options: "i"}}),
             releases.countDocuments({"tender.procurementMethod": { $regex: "selective", $options: "i"}}),
             releases.countDocuments({"tender.procurementMethod": { $regex: "direct", $options: "i"}}),
-            contracts.aggregate([
-                {$unwind: '$contracts'},
-                {
-                    $group :{
-                        _id: null,
-                        total: {
-                            $sum: "$contracts.value.amount"
-                        }
-                    }
-                }
-            ])
+            totalAmount.findOne()
         ];
 
         Promise.all(queries).then( d => {
-            d[5].toArray().then(totalAmount => {
-                res.json({
-                    procedimientos: d[0],
-                    instituciones: d[1].length,
-                    open: d[2],
-                    selective: d[3],
-                    direct: d[4],
-                    other: (d[0] - (d[2] + d[3] + d[4])),
-                    totalAmount: totalAmount[0].total
-                })
-            });
+            res.json({
+                procedimientos: d[0],
+                instituciones: d[1].length,
+                open: d[2],
+                selective: d[3],
+                direct: d[4],
+                other: (d[0] - (d[2] + d[3] + d[4])),
+                totalAmount: d[5].total
+            })
         });
 
     }).catch(error => {
