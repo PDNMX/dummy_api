@@ -62,13 +62,29 @@ router.get('/summary', (req, res) => {
 
 });
 
+router.get('/buyers', (req,res) => {
+   MongoClient.connect(dbConfig.url,{
+       useNewUrlParser: true
+   }).then( client => {
+       const db = client.db(dbConfig.dbname);
+       const releases = db.collection('edca_releases');
+       releases.distinct('buyer').then(data => {
+           res.json(data)
+       })
+
+   });
+
+});
+
 
 router.post('/search', (req, res)=> {
     const MAX_RESULTS = 10;
 
+    console.log(req.body);
+
     let pageSize = req.body.pageSize || MAX_RESULTS;
     let page = req.body.page || 0;
-    let {contract_title, ocid} = req.body;
+    let {contract_title, ocid, buyer_id} = req.body;
 
     if (isNaN(page)){
         page = 0;
@@ -93,6 +109,10 @@ router.post('/search', (req, res)=> {
 
         let query = {
         };
+
+        if (typeof buyer_id !== 'undefined'){
+            query["buyer.id"] = buyer_id ;
+        }
 
         if (typeof contract_title !== 'undefined'){
             query["contracts.title"] = {$regex: contract_title, $options: 'i'};
@@ -148,6 +168,7 @@ router.get('/releases/:ocid', (req, res) => {
     });
 });
 
+/*
 router.get('/records/:ocid', (req, res) => {
 
     const ocid = req.params.ocid;
@@ -168,6 +189,6 @@ router.get('/records/:ocid', (req, res) => {
             res.send(text);
         });
     })
-});
+});*/
 
 module.exports = router;
