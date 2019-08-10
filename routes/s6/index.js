@@ -84,7 +84,7 @@ router.post('/search', (req, res)=> {
 
     let pageSize = req.body.pageSize || MAX_RESULTS;
     let page = req.body.page || 0;
-    let {contract_title, ocid, buyer_id} = req.body;
+    let {contract_title, ocid, buyer_id, procurementMethod} = req.body;
 
     if (isNaN(page)){
         page = 0;
@@ -112,6 +112,10 @@ router.post('/search', (req, res)=> {
 
         if (typeof buyer_id !== 'undefined'){
             query["buyer.id"] = buyer_id ;
+        }
+
+        if (typeof procurementMethod !== 'undefined'){
+            query["tender.procurementMethod"] = procurementMethod;
         }
 
         if (typeof contract_title !== 'undefined'){
