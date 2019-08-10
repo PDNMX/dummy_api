@@ -84,7 +84,7 @@ router.post('/search', (req, res)=> {
 
     let pageSize = req.body.pageSize || MAX_RESULTS;
     let page = req.body.page || 0;
-    let {contract_title, ocid, buyer_id, procurementMethod} = req.body;
+    let {contract_title, ocid, buyer_id, procurementMethod, supplierName} = req.body;
 
     if (isNaN(page)){
         page = 0;
@@ -120,6 +120,17 @@ router.post('/search', (req, res)=> {
 
         if (typeof contract_title !== 'undefined'){
             query["contracts.title"] = {$regex: contract_title, $options: 'i'};
+        }
+
+        if (typeof supplierName !== 'undefined'){
+            query["$and"] = [
+                {
+                    "parties.name":{
+                        $regex: supplierName, $options: 'i'
+                    }
+                },
+                {"parties.roles": 'buyer'}
+            ]
         }
 
         if (typeof  ocid !==  'undefined'){
