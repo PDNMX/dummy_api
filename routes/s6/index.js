@@ -183,6 +183,37 @@ router.get('/releases/:ocid', (req, res) => {
     });
 });
 
+router.get('/top/:n/buyers', (req, res)=> {
+
+    let {n} = req.params;
+
+    if (isNaN(n)){
+        n = 10;
+    }else {
+        n = Math.abs(n);
+    }
+
+    //console.log(n);
+
+    if (n > 200){
+        n = 10;
+    }
+
+
+    MongoClient.connect(dbConfig.url, {
+        useNewUrlParser: true
+    }).then( client => {
+       const db = client.db(dbConfig.dbname);
+
+       db.collection('edca_buyers_amounts').find({}, {limit: n}).sort({total: -1}).toArray((error, data)=> {
+           res.json(data);
+       });
+    });
+});
+
+
+
+
 /*
 router.get('/records/:ocid', (req, res) => {
 
