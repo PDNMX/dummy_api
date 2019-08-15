@@ -122,6 +122,10 @@ router.post('/search', (req, res)=> {
             query["contracts.title"] = {$regex: contract_title, $options: 'i'};
         }
 
+        if (typeof tender_title !== 'undefined'){
+            query["tender.title"] = {$regex: tender_title, $options: 'i'};
+        }
+
         if (typeof supplierName !== 'undefined'){
             query["$and"] = [
                 {
