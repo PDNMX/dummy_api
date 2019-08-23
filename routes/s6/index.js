@@ -84,7 +84,7 @@ router.post('/search', (req, res)=> {
 
     let pageSize = req.body.pageSize || MAX_RESULTS;
     let page = req.body.page || 0;
-    let {contract_title, ocid, buyer_id, procurementMethod, supplierName} = req.body;
+    let {contract_title, ocid, buyer_id, procurementMethod, supplierName, tender_title} = req.body;
 
     if (isNaN(page)){
         page = 0;
