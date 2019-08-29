@@ -23,7 +23,8 @@ if (DB_USER !== '' && DB_PASSWORD !== '') {
 // Database Name
 const dbName = process.env.DB_NAME;
 
-console.log (url);
+// console.log (url);
+console.log(require("path").basename(__filename), url);
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
