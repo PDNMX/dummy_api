@@ -249,6 +249,18 @@ router.get('/top/:n/suppliers', (req, res)=> {
 });
 
 
+router.get('/cycles', (req, res) => {
+    MongoClient.connect(dbConfig.url, {
+        useNewUrlParser: true
+    }).then( client => {
+
+        const db = client.db(dbConfig.dbname);
+
+        db.collection('edca_releases').distinct('cycle').then( data => {
+            res.json(data.sort().reverse());
+        });
+    });
+});
 
 /*
 router.get('/records/:ocid', (req, res) => {
