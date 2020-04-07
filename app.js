@@ -71,10 +71,6 @@ var catTiposInstitucionesRouter = require("./routes/catTiposInstituciones");
 
 // catalogos
 
-
-//Sistema 6 - Contrataciones
-var indexContrataciones = require('./routes/s6/index');
-
 var app = express();
 app.use(cors());
 
@@ -161,8 +157,5 @@ app.use("/catTiposVialidades", catTiposVialidadesRouter);
 app.use("/catTitularesBienes", catTitularesBienesRouter);
 app.use("/catTiposInstituciones", catTiposInstitucionesRouter);
 // catalogos
-
-//S6 - contrataciones
-app.use("/api/s6", indexContrataciones);
 
 module.exports = app;
